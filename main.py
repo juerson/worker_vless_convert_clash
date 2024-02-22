@@ -4,85 +4,35 @@ import os
 
 FILES = ["vless_config.yaml", "server.txt", "rules.txt"]
 BASE_CONFIG = r"""mode: rule
-mixed-port: 7897
-socks-port: 7898
-port: 7899
+port: 7890
+socks-port: 7891
 allow-lan: false
 log-level: info
-ipv6: false
 secret: ''
-external-controller: 127.0.0.1:9097
+unified-delay: true
+external-controller: :9097
+global-client-fingerprint: chrome
 dns:
   enable: true
+  listen: :53
   ipv6: false
-  listen: 0.0.0.0:53
   enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver:
+  - 223.5.5.5
+  - 8.8.8.8
+  - 1.1.1.1
   nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-    - 8.8.8.8
+  - https://dns.alidns.com/dns-query
+  - https://doh.pub/dns-query
   fallback:
-    - 8.8.4.4
-    - 1.1.1.1
-    - tls://dns.google:853
-    - tls://1.0.0.1:853
-  fake-ip-filter:
-    - +.stun.*.*
-    - +.stun.*.*.*
-    - +.stun.*.*.*.*
-    - +.stun.*.*.*.*.*
-    - '*.n.n.srv.nintendo.net'
-    - +.stun.playstation.net
-    - xbox.*.*.microsoft.com
-    - '*.*.xboxlive.com'
-    - '*.msftncsi.com'
-    - '*.msftconnecttest.com'
-    - WORKGROUP
-    - '*.yeanson.cn'
-    - '*.lan'
-    - '*.nxtlnodes.com'
-    - suo.yt
-    - time.*.com
-    - time.*.gov
-    - time.*.edu.cn
-    - time.*.apple.com
-    - time1.*.com
-    - time2.*.com
-    - time3.*.com
-    - time4.*.com
-    - time5.*.com
-    - time6.*.com
-    - time7.*.com
-    - ntp.*.com
-    - ntp1.*.com
-    - ntp2.*.com
-    - ntp3.*.com
-    - ntp4.*.com
-    - ntp5.*.com
-    - ntp6.*.com
-    - ntp7.*.com
-    - '*.time.edu.cn'
-    - '*.ntp.org.cn'
-    - +.pool.ntp.org
-    - time1.cloud.tencent.com
+  - https://1.0.0.1/dns-query
+  - tls://dns.google
   fallback-filter:
     geoip: true
     geoip-code: CN
     ipcidr:
-      - 240.0.0.0/4
-      - 0.0.0.0/32
-      - 127.0.0.1/32
-    domain:
-      - +.google.com
-      - +.facebook.com
-      - +.twitter.com
-      - +.youtube.com
-      - +.xn--ngstr-lra8j.com
-      - +.google.cn
-      - +.googleapis.cn
-      - +.googleapis.com
-      - +.gvt1.com
-global-client-fingerprint: chrome
+    - 240.0.0.0/4
 """
 PROXY_GROUPS = {
     "select_group": """  - name: 🔰 节点选择
@@ -245,7 +195,7 @@ if __name__ == '__main__':
             conf["server"] = server
             conf["port"] = port
             node_names.append(name)
-            node_info_str = f"  - {str(conf).replace(": True,", ": true,").replace(": False,", ": false,")}\n"
+            node_info_str = f"  - {str(conf).replace(": True", ": true").replace(": False", ": false")}\n"
             node_li.append(node_info_str)
         node_names = [f"      - {item}" for item in node_names]
         proxy_groups_string = ""

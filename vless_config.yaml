@@ -2,13 +2,13 @@ type: vless
 name: ""
 server: ""
 port: 443
-uuid: 9b72b1d0-9b64-48ed-aec4-b74e05b058fc # 这里添加自己的UUID
+uuid: 9b72b1d0-9b64-48ed-aec4-b74e05b058fc # 这里修改为自己的UUID
 network: ws
 tls: true
 udp: false
-sni: xxx.xxx.cloudns.org # 这里添加自己的域名
+sni: xxx.xxx.cloudns.org # 这里修改成自己的域名
 client-fingerprint: chrome
 ws-opts:
-  path: "/?ed=2048"
+  path: "/?ed=2048" # 这个看你的情况修改
   headers:
-    host: xxx.xxx.cloudns.org # 这里添加自己的域名
+    host: xxx.xxx.cloudns.org # 这里修改成自己的域名
