@@ -19,20 +19,20 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   default-nameserver:
-  - 223.5.5.5
-  - 8.8.8.8
-  - 1.1.1.1
+    - 223.5.5.5
+    - 8.8.8.8
+    - 1.1.1.1
   nameserver:
-  - https://dns.alidns.com/dns-query
-  - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
   fallback:
-  - https://1.0.0.1/dns-query
-  - tls://dns.google
+    - https://1.0.0.1/dns-query
+    - tls://dns.google
   fallback-filter:
     geoip: true
     geoip-code: CN
     ipcidr:
-    - 240.0.0.0/4
+      - 240.0.0.0/4
 """
 PROXY_GROUPS = {
     "select_group": """  - name: 🔰 节点选择
