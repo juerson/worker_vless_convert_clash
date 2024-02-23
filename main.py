@@ -1,16 +1,15 @@
 import yaml
 import logging
 import os
+import re
 
-FILES = ["vless_config.yaml", "server.txt", "rules.txt"]
+FILES = ["resources/vless_config.yaml", "server.txt", "resources/rules.txt"]
 BASE_CONFIG = r"""mode: rule
 port: 7890
 socks-port: 7891
 allow-lan: false
 log-level: info
-secret: ''
-unified-delay: true
-external-controller: :9097
+external-controller: :9090
 global-client-fingerprint: chrome
 dns:
   enable: true
@@ -18,21 +17,10 @@ dns:
   ipv6: false
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
-  default-nameserver:
-    - 223.5.5.5
-    - 8.8.8.8
-    - 1.1.1.1
-  nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  fallback:
-    - https://1.0.0.1/dns-query
-    - tls://dns.google
-  fallback-filter:
-    geoip: true
-    geoip-code: CN
-    ipcidr:
-      - 240.0.0.0/4
+  default-nameserver: ["223.5.5.5", "8.8.8.8", "1.1.1.1"]
+  nameserver: ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query"]
+  fallback: ["https://1.0.0.1/dns-query", "tls://dns.google"]
+  fallback-filter: {"geoip": true, "geoip-code": "CN", "ipcidr": ["240.0.0.0/4"]}
 """
 PROXY_GROUPS = {
     "select_group": """  - name: 🔰 节点选择
@@ -44,7 +32,8 @@ PROXY_GROUPS = {
     "auto_group": """  - name: ♻️ 自动选择
     type: url-test
     url: http://www.gstatic.com/generate_204
-    interval: 300
+    interval: 1000
+    tolerance: 50
     proxies:
 """,
     "netflix_group": """  - name: 🎥 NETFLIX
@@ -179,23 +168,32 @@ class FileHandler:
 
 
 if __name__ == '__main__':
-    port = 8443  # 写入vless配置的，全部都用这个端口，可以改为443、2053、2083、2087、2096、8443
     # 设置日志记录器的配置
     logging.basicConfig(level=logging.ERROR)
     handler = FileHandler()
     conf = handler.read_yaml_info(FILES[0])
     servers = handler.read_txt_server(FILES[1])
     RULES = handler.read_txt_rules(FILES[2])
+    default_port = conf.get("port")
+    if default_port:
+        port = default_port  # 如果配置文件中有端口，就使用配置文件中的端口
+    else:
+        port = 8443  # 如果配置文件中，没有端口就使用这个端口，当然也可以改为443、2053、2083、2087、2096
     if conf and servers and RULES:  # 读取到的内容合法，才执行下面的步骤
         node_names = []
         node_li = ["proxies:\n", ]
         for server in servers:
-            name = f"{server}:{port}"
-            conf["name"] = name
-            conf["server"] = server
-            conf["port"] = port
+            ip_with_port = re.split(r"\s+", server)  # 分割出IP地址/域名、端口
+            if len(ip_with_port) > 1 and ip_with_port[1].isdigit():
+                name = f"{ip_with_port[0]}:{ip_with_port[1]}"
+                conf["port"] = ip_with_port[1]
+            else:
+                name = f"{ip_with_port[0]}:{port}"
+                conf["port"] = port
             node_names.append(name)
-            node_info_str = f"  - {str(conf).replace(": True", ": true").replace(": False", ": false")}\n"
+            conf["name"] = name
+            conf["server"] = ip_with_port[0]
+            node_info_str = "  - {}\n".format(str(conf).replace(": True", ": true").replace(": False", ": false"))
             node_li.append(node_info_str)
         node_names = [f"      - {item}" for item in node_names]
         proxy_groups_string = ""
