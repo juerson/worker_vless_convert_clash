@@ -27,7 +27,7 @@
    pip3 install PyYAML
    ```
 
-#### 二、修改 `resources/vless_config.yaml` 里面的配置信息，并且将优选的CF IP或反代IP、优选域名写入到[server.txt](https://github.com/juerson/worker_vless_convert_clash/blob/master/server.txt)文件中(支持端口)
+#### 二、修改 `resources/node_config.yaml` 里面的配置信息，并且将优选的CF IP或反代IP、优选域名写入到[server.txt](https://github.com/juerson/worker_vless_convert_clash/blob/master/server.txt)文件中(支持IP、域名，还支持在后面指定端口)
 
 ```yaml
 type: vless
@@ -46,6 +46,6 @@ ws-opts:
     host: xxx.xxx.workers.dev # 这里修改成自己的域名
 ```
 
-#### 三、windows中双击`run.bat`文件或执行`python main.py`命令运行
+#### 三、执行`python main.py`命令运行
 
-#### 四、生成的 [clash.yaml ](https://github.com/juerson/worker_vless_convert_clash/blob/master/clash.yaml)文件就是你需要的clash配置文件，将它导入 [clash verge](https://github.com/clash-verge-rev/clash-verge-rev) 或绝版 [clash_for_windows_pkg(英文版)](https://archive.org/download/clash_for_windows_pkg) 、[Clash for Windows V0.20.39(汉化版)](https://github.com/Z-Siqi/Clash-for-Windows_Chinese/releases/tag/CFW-V0.20.39_CN) 使用即可。
+#### 四、生成的 [./output ](https://github.com/juerson/worker_vless_convert_clash/blob/master/output)文件夹中文件就是你需要的clash配置文件，将它导入 [clash verge](https://github.com/clash-verge-rev/clash-verge-rev) 或绝版 [clash_for_windows_pkg(英文版)](https://archive.org/download/clash_for_windows_pkg) 、[Clash for Windows V0.20.39(汉化版)](https://github.com/Z-Siqi/Clash-for-Windows_Chinese/releases/tag/CFW-V0.20.39_CN) 、[clash-nyanpasu](https://github.com/LibNyanpasu/clash-nyanpasu)、[clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev)、[FlClash](https://github.com/chen08209/FlClash)使用即可。

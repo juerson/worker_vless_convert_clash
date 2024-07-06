@@ -1,3 +1,128 @@
+port: 7890           # HTTP 代理端口
+socks-port: 7891     # Socks 端口
+redir-port: 7892     # Redir 端口
+mixed-port: 7893     # 混合端口
+allow-lan: true      # 允许局域网连接
+bind-address: "*"    # 地址绑定
+mode: Rule           # 规则模式
+log-level: info      # 日志级别
+ipv6: false          # IPV6开关
+external-controller: 127.0.0.1:9090
+dns:
+  enable: true       # 不使用系统 DNS
+  ipv6: false        # 关闭 IPV6
+  listen: 0.0.0.0:53 # dns 监听
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - "*.lan"
+    - localhost.ptlogin2.qq.com
+    - +.srv.nintendo.net
+    - +.stun.playstation.net
+    - +.msftconnecttest.com
+    - +.msftncsi.com
+    - +.xboxlive.com
+    - msftconnecttest.com
+    - xbox.*.microsoft.com
+    - "*.battlenet.com.cn"
+    - "*.battlenet.com"
+    - "*.blzstatic.cn"
+    - "*.battle.net"
+  nameserver:        # 默认 DNS 服务
+    - 180.184.1.1
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  fallback:          # 国外 DNS 服务器
+    - https://doh.dns.sb/dns-query
+    - https://doh.opendns.com/dns-query
+    - https://dns.google/dns-query
+    - https://1.1.1.1/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 240.0.0.0/4
+proxies:
+  - {name: 01, server: 127.0.0.1, port: 80, type: ss, cipher: aes-128-gcm, password: a123456}
+proxy-groups:
+  - name: 🔰 节点选择
+    type: select
+    proxies:
+      - ♻️ 自动选择
+      - 🎯 全球直连
+      - 01
+  - name: ♻️ 自动选择
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    proxies:
+      - 01
+  - name: 🎥 NETFLIX
+    type: select
+    proxies:
+      - 🔰 节点选择
+      - ♻️ 自动选择
+      - 🎯 全球直连
+      - 01
+  - name: ⛔️ 广告拦截
+    type: select
+    proxies:
+      - 🛑 全球拦截
+      - 🎯 全球直连
+      - 🔰 节点选择
+  - name: 🚫 运营劫持
+    type: select
+    proxies:
+      - 🛑 全球拦截
+      - 🎯 全球直连
+      - 🔰 节点选择
+  - name: 🌍 国外媒体
+    type: select
+    proxies:
+      - 🔰 节点选择
+      - ♻️ 自动选择
+      - 🎯 全球直连
+      - 01
+  - name: 🌏 国内媒体
+    type: select
+    proxies:
+      - 🎯 全球直连
+      - 🔰 节点选择
+  - name: Ⓜ️ 微软服务
+    type: select
+    proxies:
+      - 🎯 全球直连
+      - 🔰 节点选择
+      - 01
+  - name: 📲 电报信息
+    type: select
+    proxies:
+      - 🔰 节点选择
+      - 🎯 全球直连
+      - 01
+  - name: 🍎 苹果服务
+    type: select
+    proxies:
+      - 🔰 节点选择
+      - 🎯 全球直连
+      - ♻️ 自动选择
+      - 01
+  - name: 🎯 全球直连
+    type: select
+    proxies:
+      - DIRECT
+  - name: 🛑 全球拦截
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+  - name: 🐟 漏网之鱼
+    type: select
+    proxies:
+      - 🔰 节点选择
+      - 🎯 全球直连
+      - ♻️ 自动选择
+      - 01
 rules:
   - DOMAIN-SUFFIX,local,🎯 全球直连
   - IP-CIDR,192.168.0.0/16,🎯 全球直连,no-resolve
@@ -292,7 +417,6 @@ rules:
   - DOMAIN-SUFFIX,biz5.kankan.com,🛑 全球拦截
   - DOMAIN-SUFFIX,c.algovid.com,🛑 全球拦截
   - DOMAIN-SUFFIX,cms.laifeng.com,🛑 全球拦截
-  - DOMAIN-SUFFIX,da.mmarket.com,🛑 全球拦截
   - DOMAIN-SUFFIX,dotcounter.douyutv.com,🛑 全球拦截
   - DOMAIN-SUFFIX,g.uusee.com,🛑 全球拦截
   - DOMAIN-SUFFIX,gcdn.2mdn.net,🛑 全球拦截
@@ -9237,20 +9361,14 @@ rules:
   - DOMAIN-SUFFIX,hdslb.com,🌏 国内媒体
   - DOMAIN,upos-hz-mirrorakam.akamaized.net,🌏 国内媒体
   - DOMAIN,apiintl.biliapi.net,🌏 国内媒体
-  - DOMAIN,intel-cache.m.iqiyi.com,🌏 国内媒体
-  - DOMAIN,intel-cache.video.iqiyi.com,🌏 国内媒体
-  - DOMAIN,intl-rcd.iqiyi.com,🌏 国内媒体
-  - DOMAIN,intl-subscription.iqiyi.com,🌏 国内媒体
-  - DOMAIN-SUFFIX,inter.iqiyi.com,🌏 国内媒体
-  - DOMAIN-SUFFIX,inter.ptqy.gitv.tv,🌏 国内媒体
-  - DOMAIN-SUFFIX,intl.iqiyi.com,🌏 国内媒体
+  - DOMAIN-SUFFIX,iqiyi.com,🌏 国内媒体
+  - DOMAIN-SUFFIX,iqiyipic.com,🌏 国内媒体
   - DOMAIN-SUFFIX,iq.com,🌏 国内媒体
-  - IP-CIDR,103.44.56.0/22,🌏 国内媒体,no-resolve
-  - IP-CIDR,118.26.120.0/24,🌏 国内媒体,no-resolve
-  - IP-CIDR,118.26.32.0/23,🌏 国内媒体,no-resolve
-  - IP-CIDR,223.119.62.225/28,🌏 国内媒体,no-resolve
-  - IP-CIDR,23.40.241.251/32,🌏 国内媒体,no-resolve
-  - IP-CIDR,23.40.242.10/32,🌏 国内媒体,no-resolve
+  - DOMAIN-SUFFIX,qy.net,🌏 国内媒体
+  - DOMAIN-SUFFIX,gitv.tv,🌏 国内媒体
+  - DOMAIN-SUFFIX,71.am,🌏 国内媒体
+  - DOMAIN-KEYWORD,qiyi,🌏 国内媒体
+  - DOMAIN,cache.video.iqiyi.com,🌏 国内媒体
   - DOMAIN-SUFFIX,api.mob.app.letv.com,🌏 国内媒体
   - DOMAIN-SUFFIX,v.smtcdns.com,🌏 国内媒体
   - DOMAIN-SUFFIX,vv.video.qq.com,🌏 国内媒体
@@ -9811,5 +9929,6 @@ rules:
   - DOMAIN-KEYWORD,yunpan,🎯 全球直连
   - DOMAIN-KEYWORD,Thunder,🎯 全球直连
   - DOMAIN-KEYWORD,XLLiveUD,🎯 全球直连
+  - DOMAIN-KEYWORD,github,🔰 节点选择
   - GEOIP,CN,🎯 全球直连
   - MATCH,🐟 漏网之鱼
