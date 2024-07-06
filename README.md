@@ -48,4 +48,4 @@ ws-opts:
 
 #### 三、执行`python main.py`命令运行
 
-#### 四、生成的 [./output ](https://github.com/juerson/worker_vless_convert_clash/blob/master/output)文件夹中文件就是你需要的clash配置文件，将它导入 [clash verge](https://github.com/clash-verge-rev/clash-verge-rev) 或绝版 [clash_for_windows_pkg(英文版)](https://archive.org/download/clash_for_windows_pkg) 、[Clash for Windows V0.20.39(汉化版)](https://github.com/Z-Siqi/Clash-for-Windows_Chinese/releases/tag/CFW-V0.20.39_CN) 、[clash-nyanpasu](https://github.com/LibNyanpasu/clash-nyanpasu)、[clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev)、[FlClash](https://github.com/chen08209/FlClash)使用即可。
+#### 四、生成的 `./output`文件夹中文件就是你需要的clash配置文件，将它导入 [clash verge](https://github.com/clash-verge-rev/clash-verge-rev) 或绝版 [clash_for_windows_pkg(英文版)](https://archive.org/download/clash_for_windows_pkg) 、[Clash for Windows V0.20.39(汉化版)](https://github.com/Z-Siqi/Clash-for-Windows_Chinese/releases/tag/CFW-V0.20.39_CN) 、[clash-nyanpasu](https://github.com/LibNyanpasu/clash-nyanpasu)、[clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev)、[FlClash](https://github.com/chen08209/FlClash)使用即可。
