@@ -1,4 +1,4 @@
-将代码下载或git clone到本地电脑中，然后按下面的步骤操作：
+将代码下载或git clone到本地电脑中，然后按下面的步骤操作。
 
 #### 一、安装Python和PyYAML第三方库（懂的人就忽略）
 
@@ -27,7 +27,10 @@
    pip3 install PyYAML
    ```
 
-#### 二、修改 `resources/node_config.yaml` 里面的配置信息，并且将优选的CF IP或反代IP、优选域名写入到[server.txt](https://github.com/juerson/worker_vless_convert_clash/blob/master/server.txt)文件中(支持IP、域名，还支持在后面指定端口)
+#### 二、修改 `resources/node_config.yaml` 里面的配置信息，然后将优选的CF IP或反代IP、优选域名写入到[server.txt](https://github.com/juerson/worker_vless_convert_clash/blob/master/server.txt)文件中(支持IP、域名，还支持在后面指定端口)
+
+#####  1、node_config.yaml 配置文件：
+
 - vless+ws+tls：
 
 ```yaml
@@ -62,8 +65,24 @@ ws-opts:
   headers:
     Host: xxx.pages.dev # 这里修改成自己的域名，这个好像可以删除，一样能使用
 ```
-理论上，修改成其它代理协议（vmess）是可以的，程序只使用到前面的`server`、`port`和`name`字段；其它key-value，你的数据结构是怎么样的就怎么样的，自己可以灵活修改。
+注意：trojan+ws+tls，查询到的落脚IP是`104.28.*.*`，不是PROXYIP，导致一些网站访问不了，PROXYIP丢失原因未知。
 
+理论上，修改成其它代理协议（比如：vmess）是可以的，程序只使用到前面的`server`、`port`和`name`字段；其它key-value，你的数据结构是怎么样的就怎么样的，自己可以灵活修改，能否可用，自己测试。
+
+##### 2、server.txt文件：
+
+无端口的domain、ipv4/ipv6；带端口的domain、ipv4/ipv6。
+
+```txt
+www.speedtest.net
+www.speedtest.net 443
+
+104.18.61.187
+104.18.61.187 443
+
+2606:4700:310c::ac42:2c5d
+2606:4700:310c::ac42:2c5d 2053
+```
 
 #### 三、执行`python main.py`命令运行
 
