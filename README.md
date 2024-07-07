@@ -28,23 +28,42 @@
    ```
 
 #### 二、修改 `resources/node_config.yaml` 里面的配置信息，并且将优选的CF IP或反代IP、优选域名写入到[server.txt](https://github.com/juerson/worker_vless_convert_clash/blob/master/server.txt)文件中(支持IP、域名，还支持在后面指定端口)
+- vless+ws+tls：
 
 ```yaml
 type: vless
-name:
-server:
-port:
+name: ""
+server: ""
+port: 443
 uuid: 9b72b1d0-9b64-48ed-aec4-b74e05b058fc # 这里修改为自己的UUID
 network: ws
 tls: true
 udp: false
-sni: xxx.xxx.workers.dev # 这里修改成自己的域名
+sni: xxx.pages.dev # 这里修改成自己的域名
 client-fingerprint: chrome
 ws-opts:
   path: "/?ed=2048" # 这个看你的情况修改
   headers:
-    host: xxx.xxx.workers.dev # 这里修改成自己的域名
+    host: xxx.pages.dev # 这里修改成自己的域名
 ```
+- trojan+ws+tls：
+
+```yaml
+type: trojan
+name: ""
+server: ""
+port: 443
+password: 9b72b1d0-9b64-48ed-aec4-b74e05b058fc # 修改为自己的密码 
+network: ws
+udp: false
+sni: xxx.pages.dev # 这里修改成自己的域名
+ws-opts:
+  path: /
+  headers:
+    Host: xxx.pages.dev # 这里修改成自己的域名，这个好像可以删除，一样能使用
+```
+理论上，修改成其它代理协议（vmess）是可以的，程序只使用到前面的`server`、`port`和`name`字段；其它key-value，你的数据结构是怎么样的就怎么样的，自己可以灵活修改。
+
 
 #### 三、执行`python main.py`命令运行
 
